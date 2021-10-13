@@ -8,6 +8,55 @@ def is_impar(lst):
         if num%2==0:
             return False
     return True
+
+def is_prime(n):
+    '''
+
+    :param n: un nr natural n
+    :return: True, daca nr e prim. False, in caz contrar
+    '''
+    if n<2:
+        return False
+    if n==2:
+        return True
+    for d in range(2,n//2+1):
+        if n%d==0:
+            return False
+    return True
+def test_is_prime():
+    assert is_prime(1)==False
+    assert is_prime(2)==True
+    assert is_prime(8)==False
+    assert is_prime(5)==True
+def sequence_prime(l):
+    '''
+
+    :param l:O lista de numere
+    :return: Returneaza True daca toate nr din lista sunt prime. False, in caz contrar
+    '''
+    for num in l:
+        if is_prime(num)==False:
+            return False
+    return True
+def test_sequence_prime():
+    assert sequence_prime([2,3,5])==True
+    assert sequence_prime([4,8])==False
+def get_longest_all_primes(l):
+    '''
+
+    :param l:o lista de nr
+    :return: cea mai lunga secventa de nr prime
+    '''
+    result=[]
+    for i in range(len(l)):
+        for j in range(i,len(l)):
+            if sequence_prime(l[i:j+1])==True and len(l[i:j+1])>len(result):
+                result=l[i:j+1]
+    return result
+def test_get_longest_all_primes():
+    assert get_longest_all_primes([1,2,3,4])==[2,3]
+    assert get_longest_all_primes([10,11,13,12,13,14,15])==[11,13]
+
 def test_is_impar():
     assert is_impar([]) is True
     assert is_impar([1,2,3]) is False
@@ -45,24 +94,10 @@ def show_menu():
     print('1. Citire date')
     print('2. Determina cea mai lunga subsecventa pentru care produsul numerelor este impar')
     print('3. Determina cea mai lunga subsecventa pentru care concatenarea numerelor din subsecvență are cifrele în ordine crescătoare.')
-    print('4. Optiune gresita')
-def the_first_cipher(n):
-    '''
-
-    :param n: un numar natural
-    :return: Returneaza prima cifra a numarului
-    '''
-    while n>9:
-        n=n//10
-    return n
-def test_the_first_cipher():
-    assert the_first_cipher(2)==2
-    assert the_first_cipher(12)==1
-    assert the_first_cipher(778)==7
-
+    print('4. Determina cea mai lunga subsecventa de numere prime')
+    print('5. Optiune gresita')
 def a_numer_has_the_ciphres_in_ascending_order(n):
     '''
-
     :param n:un numar natural citit de la tastatura
     :return: True, daca un numar are cifrele ordonate crescator. False, in caz contrar.
     '''
@@ -78,8 +113,6 @@ def test_a_numer_has_the_ciphres_in_ascending_order():
     assert a_numer_has_the_ciphres_in_ascending_order(123)==True
     assert a_numer_has_the_ciphres_in_ascending_order(7)==True
     assert a_numer_has_the_ciphres_in_ascending_order(101)==False
-
-
 def concat(l):
     '''
 
@@ -96,6 +129,11 @@ def concat(l):
     return False
 
 def get_longest_concat_digits_asc(l):
+    '''
+
+    :param l: o lista
+    :return: cea mai lunga secventa pt care concatenarea cifrelor numarului sunt in ord crescatoare
+    '''
     subsecventaMax = []
     for i in range(len(l)):
         for j in range(i, len(l)):
@@ -121,13 +159,17 @@ def main():
         elif optiune=='3':
             print(get_longest_concat_digits_asc(l))
         elif optiune=='4':
+            print(get_longest_all_primes(l))
+        elif optiune=='5':
             break
         else:
             print("Optiune invalida")
 if __name__=='__main__':
     test_is_impar()
+    test_is_prime()
     test_get_longest_product_is_odd()
     test_get_longest_concat_digits_asc()
-    test_the_first_cipher()
+    test_sequence_prime()
     test_a_numer_has_the_ciphres_in_ascending_order()
+    test_get_longest_all_primes()
     main()
